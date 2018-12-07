@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="author" content="steve benedict">
+        <meta name="description" content="Crypto-Match v1.1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Crypto-Match v1.1</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <button class="reset">Reset Board</button><span>Crypto-Match</span><span id="totalUSD">$0.00</span>
+            </header>
+            <section class="gameStats">
+                <div>Games Played: <span id='gamesPlayed'>0</span>, Tries: <span id='tries'>0</span></div>
+                <div>Match Accuracy: <span id='accuracy'>0.00</span>%</div>
+                <div id="wallet">
+                    <div>Coin: <span>Amount</span> <span>Market Price</span></div>
+                </div>
+                
+            </section>
+            <section id="gameArea"></section>
+            <footer>
+                <span id="message">starting game...</span>
+            </footer>
+        </div>
+    </body>
+</html>
