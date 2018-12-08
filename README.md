@@ -6,7 +6,7 @@
 
 #### Technologies Used 
 
-> Crypto-Match uses HTML and mobile responsive CSS for it's interface. Javascript, with JQuery, is used to create the game play, simulate market prices, and keep score.
+> Crypto-Match uses HTML and mobile responsive CSS for its interface. Javascript, with JQuery, is used to create the game play, simulate market prices, and keep score.
 
 > ##### Files in repo:
 >    - index.html - the HTML file: defines the main elements
