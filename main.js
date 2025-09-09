@@ -268,22 +268,32 @@ function startGame(){
 }
 
 function changeIndices(){
-    for (var index = 0; index < $marketPriceSpans.length; index++){
-        var oldPrice = parseFloat($marketPriceSpans[index].text());
-        var randomDeltaIndex = getRandomIndex(0, deltas.length-1);
-        var newPrice = oldPrice + (oldPrice * deltas[randomDeltaIndex]);
+    const volatility = 0.03; // 3% standard deviation
+    const minPrice = 0.01;
+
+    for (let index = 0; index < $marketPriceSpans.length; index++){
+        let oldPrice = parseFloat($marketPriceSpans[index].text());
+
+        // Simulate a random walk using a normal distribution (Box-Muller transform)
+        let rand1 = Math.random();
+        let rand2 = Math.random();
+        let gaussian = Math.sqrt(-2 * Math.log(rand1)) * Math.cos(2 * Math.PI * rand2);
+
+        // Calculate percent change
+        let percentChange = gaussian * volatility;
+        let newPrice = oldPrice * (1 + percentChange);
+
+        // Clamp to minimum price
+        newPrice = Math.max(newPrice, minPrice);
 
         if (oldPrice < newPrice){
-            $marketPriceSpans[index].removeClass('red');
-            $marketPriceSpans[index].addClass('green');
+            $marketPriceSpans[index].removeClass('red').addClass('green');
         }
         else if (oldPrice > newPrice){
-            $marketPriceSpans[index].removeClass('green');
-            $marketPriceSpans[index].addClass('red');
+            $marketPriceSpans[index].removeClass('green').addClass('red');
         }
         else{
-            $marketPriceSpans[index].removeClass('green');
-            $marketPriceSpans[index].removeClass('red');
+            $marketPriceSpans[index].removeClass('green red');
         }
         $marketPriceSpans[index].text(newPrice.toFixed(2));
     }
