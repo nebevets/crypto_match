@@ -1,248 +1,252 @@
-body{
-    margin: 0;
-    box-sizing: border-box;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    background-image: url('images/blockchain.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    font-family: sans-serif;
-    color: #29313d;
-    height: 100vh;
-    font-size: 0;
+body {
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-image: url("images/blockchain.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: sans-serif;
+  color: #29313d;
+  height: 100vh;
+  font-size: 0;
 }
-.container{
-    position: absolute;
-    width: 750px;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -25%);
+.container {
+  position: absolute;
+  width: 750px;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
 }
-header, footer{
-    background: #6e7b8e;
-    height: 10vh;
+header,
+footer {
+  background: #6e7b8e;
+  height: 10vh;
+  width: 100%;
+  text-align: center;
+  opacity: 0.85;
+  padding-top: 3vh;
+}
+header {
+  border-radius: 5px 5px 0 0;
+}
+footer {
+  border-radius: 0 0 5px 5px;
+}
+header span,
+footer span {
+  background-color: #f0f2f5;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: x-large;
+}
+footer span {
+  font-size: large;
+}
+section {
+  vertical-align: top;
+  height: 270px;
+}
+section.gameStats {
+  display: inline-block;
+  font-size: medium;
+  width: 30%;
+  background-color: #f0f2f5;
+  text-align: center;
+}
+#gameArea {
+  background-color: #f0f2f5;
+  display: inline-block;
+  width: 70%;
+}
+div.card {
+  position: relative;
+  border-radius: 50%;
+  border: 5px solid #72cf61;
+  margin: 10px;
+  width: 55px;
+  height: 55px;
+  float: left;
+}
+div.card:nth-of-type(6n + 1) {
+  clear: left;
+}
+.card > img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+#wallet {
+  text-align: left;
+  line-height: 20px;
+  width: 210px;
+  border: 1px solid #1d2126;
+  font-size: small;
+  border-radius: 5px;
+  margin: 5px 5px;
+  background-color: #f1f2f5;
+}
+#wallet img {
+  width: 18px;
+  height: 18px;
+  vertical-align: top;
+}
+#wallet span {
+  float: right;
+  padding-left: 5px;
+}
+#wallet div:first-child {
+  border-bottom: 1px solid black;
+}
+#wallet div:last-child {
+  border-radius: 0 0 5px 5px;
+}
+.hidden {
+  display: none;
+}
+.back {
+  cursor: pointer;
+}
+.balance {
+  text-align: right;
+}
+.even {
+  background: white;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+#totalUSD {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: medium;
+}
+button.reset {
+  position: absolute;
+  background-color: #f0f2f5;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  border: 1px solid #1d2126;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: xx-small;
+}
+@media screen and (max-width: 750px) {
+  .container {
+    position: initial;
     width: 100%;
+    height: 100%;
+    top: initial;
+    left: initial;
+    transform: initial;
     text-align: center;
+  }
+  header,
+  footer {
+    background: #8c9aaf;
+    height: 2%;
+    padding: 5% 0;
     opacity: 0.85;
-    padding-top: 3vh;
-}
-header{
-    border-radius: 5px 5px 0 0;
-}
-footer{
-    border-radius: 0 0 5px 5px;
-}
-header span, footer span{
+    border-radius: initial;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+  }
+  header span {
+    font-size: x-large;
     background-color: #f0f2f5;
     border-radius: 5px;
     padding: 5px;
-    font-size: x-large;
-}
-footer span{
+    text-align: initial;
+  }
+  footer span {
     font-size: large;
-}
-section{
-    vertical-align: top;
-    height: 270px;
-}
-section.gameStats{
-    display: inline-block;
+    background-color: #f0f2f5;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  section {
+    vertical-align: initial;
+    height: unset;
+  }
+  section.gameStats {
     font-size: medium;
-    width: 30%;
-    background-color: #f0f2f5;
-    text-align: center;
-}
-#gameArea{
-    background-color: #f0f2f5;
-    display: inline-block;
-    width: 70%;
-}
-div.card{
-    position: relative;
-    border-radius: 50%;
-    border: 5px solid #72cf61;
-    margin: 10px;
-    width: 55px;
-    height: 55px;
-    float: left;
-}
-div.card:nth-of-type(6n+1){
-    clear: left;
-}
-.card>img{
-    position: absolute;
     width: 100%;
-    height: 100%;
-}
-#wallet{
+    background-color: initial;
+    margin: 2% auto;
+  }
+  #gameArea {
+    position: relative;
+    background-color: #f0f2f5;
+    width: 320px;
+    margin: auto;
+    border: 1px solid #1d2126;
+    border-radius: 5px;
+  }
+  div.card {
+    border-radius: 50%;
+    border: 3px solid #72cf61;
+    height: 43px;
+    width: 43px;
+    margin: 2px;
+    text-align: initial;
+  }
+  #wallet {
     text-align: left;
     line-height: 20px;
-    width: 210px;
-    border: 1px solid #1d2126;
+    width: 80%;
+    border: 1px solid black;
     font-size: small;
     border-radius: 5px;
-    margin: 5px 5px;
-    background-color: #f1f2f5;
-}
-#wallet img{
+    margin: 0 10%;
+  }
+  #wallet img {
     width: 18px;
     height: 18px;
     vertical-align: top;
-}
-#wallet span{
+  }
+  #wallet span {
     float: right;
     padding-left: 5px;
-}
-#wallet div:first-child{
+  }
+  #wallet div:first-child {
     border-bottom: 1px solid black;
-}
-#wallet div:last-child{
+  }
+  #wallet div:last-child {
     border-radius: 0 0 5px 5px;
-}
-.hidden{
-    display: none;
-}
-.back{
-    cursor: pointer;
-}
-.balance{
+  }
+  .balance {
+    width: 30px;
     text-align: right;
-}
-.even{
-    background: white;
-}
-.red{
-    color: red;
-}
-.green{
-    color: green;
-}
-#totalUSD{
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  }
+  #totalUSD {
     font-size: medium;
-}
-button.reset{
-    position: absolute;
-    background-color: #f0f2f5;
-    top: 10px;
-    left: 10px;
-    cursor: pointer;
-    border: 1px solid #1d2126;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: xx-small;
-}
-@media screen and (max-width: 750px) {
-    .container{
-        position: initial;
-        width: 100%;
-        height: 100%;
-        top: initial;
-        left: initial;
-        transform: initial;
-        text-align: center;
-    }
-    header, footer{
-        background: #8c9aaf;
-        height: 2%;
-        padding: 5% 0;
-        opacity: 0.85;
-        border-radius: initial;
-    }
-    footer{
-        position: fixed;
-        bottom: 0;
-    }
-    header span{
-        font-size: x-large;
-        background-color: #f0f2f5;
-        border-radius: 5px;
-        padding: 5px;
-        text-align: initial;
-    }
-    footer span{
-        font-size: large;
-        background-color: #f0f2f5;
-        border-radius: 5px;
-        padding: 5px;
-    }
-    section{
-        vertical-align: initial;
-        height: unset;
-    }
-    section.gameStats{
-        font-size: medium;
-        width: 100%;
-        background-color: initial;
-        margin: 2% auto;
-    }
-    #gameArea{
-        position: relative;
-        background-color: #f0f2f5;
-        width: 320px;
-        margin: auto;
-        border: 1px solid #1d2126;
-        border-radius: 5px;
-    }
-    div.card{
-        border-radius: 50%;
-        border: 3px solid #72cf61;
-        height: 43px;
-        width: 43px;
-        margin: 2px;
-        text-align: initial;
-    }
-    #wallet{
-        text-align: left;
-        line-height: 20px;
-        width: 80%;
-        border: 1px solid black;
-        font-size: small;
-        border-radius: 5px;
-        margin: 0 10%;
-    }
-    #wallet img{
-        width: 18px;
-        height: 18px;
-        vertical-align: top;
-    }
-    #wallet span{
-        float: right;
-        padding-left: 5px;
-    }
-    #wallet div:first-child{
-        border-bottom: 1px solid black;
-    }
-    #wallet div:last-child{
-        border-radius: 0 0 5px 5px;
-    }
-    .balance{
-        width: 30px;
-        text-align: right;
-    }
-    #totalUSD{
-        font-size: medium;
-    }
+  }
 }
 @media screen and (max-width: 512px) {
-    header, footer{
-        height: 5%;
-    }
-    #gameArea{
-        width: 320px;
-        margin: 5% auto;
-    }
-    #wallet{
-        width: 70%;
-        margin: 0 15%;
-    }
-    section.gameStats{
-        margin: 5% auto;
-    }
-    #gameArea{
-        margin: 5% auto;
-    }
+  header,
+  footer {
+    height: 5%;
+  }
+  #gameArea {
+    width: 320px;
+    margin: 5% auto;
+  }
+  #wallet {
+    width: 70%;
+    margin: 0 15%;
+  }
+  section.gameStats {
+    margin: 5% auto;
+  }
+  #gameArea {
+    margin: 5% auto;
+  }
 }
