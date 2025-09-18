@@ -17,17 +17,17 @@
         <button class="reset">Reset Board</button><span>Crypto-Match</span
         ><span id="totalUSD">$0.00</span>
       </header>
-      <section class="gameStats">
-        <div>
+      <div class="stats">
           Games Played: <span id="gamesPlayed">0</span>, Tries:
           <span id="tries">0</span>
+          <div>Match Accuracy: <span id="accuracy">0.00</span>%</div>
         </div>
-        <div>Match Accuracy: <span id="accuracy">0.00</span>%</div>
-        <div id="wallet">
+      <section class="gameSection">
+        <div id="wallet" class=""wallet">
           <div>Coin: <span>Amount</span> <span>Market Price</span></div>
         </div>
+        <div id="gameArea" class="gameArea"></div>
       </section>
-      <section id="gameArea"></section>
       <footer>
         <span id="message">starting game...</span>
       </footer>

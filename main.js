@@ -42,6 +42,7 @@ class Game {
     this.maxMatches = 0;
     this.coins = [];
     this.locked = false;
+    this.backImgPath = "images/back.png"; // <-- Add this line
   }
   startNewGame(coins) {
     this.gamesPlayed++;
@@ -203,22 +204,23 @@ class UI {
     this.$gameArea.empty();
     this.game.coins.forEach((coin, index) => {
       const $cardDiv = $(`
-        <div class="card" data-index="${index}">
-        </div>
+        <div class="card" data-index="${index}"></div>
       `);
-      $cardDiv
-        .toggleClass("matched", coin.state === "matched")
-        .toggleClass(
-          "revealed",
-          coin.state === "revealed" || coin.state === "matched"
-        )
-        .toggleClass("hidden", coin.state === "hidden");
-      // Set background image via CSS classes
+
+      // Remove .hidden logic
+      $cardDiv.removeClass("hidden");
+
+      // Always add .card and .back by default
+      $cardDiv.addClass("card");
+
       if (coin.state === "hidden") {
+        $cardDiv.addClass("back").removeClass("revealed matched");
         $cardDiv.css("background-image", `url(${this.game.backImgPath})`);
       } else {
+        $cardDiv.removeClass("back").addClass(coin.state);
         $cardDiv.css("background-image", `url(${coin.src})`);
       }
+
       $cardDiv.on("click", () => {
         this.game.handleClick(
           index,
@@ -266,10 +268,10 @@ $document.ready(() => {
   const coinsData = [
     new Coin("Cardano", "ada", "images/ada.png", 0.03),
     new Coin("Binance", "bnb", "images/bnb.png", 5.72),
-    new Coin("BitCoin", "btc", "images/btc.png", 3977.1),
+    new Coin("Bitcoin", "btc", "images/btc.png", 3977.1),
     new Coin("Dash", "dash", "images/dash.png", 86.43),
     new Coin("Ethereum", "eth", "images/eth.png", 111.44),
-    new Coin("LiteCoin", "ltc", "images/ltc.png", 31.67),
+    new Coin("Litecoin", "ltc", "images/ltc.png", 31.67),
     new Coin("Stellar", "xlm", "images/xlm.png", 0.15),
     new Coin("Ripple", "xrp", "images/xrp.png", 0.35),
     new Coin("Monero", "xmr", "images/xmr.png", 57.25),
