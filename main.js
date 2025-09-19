@@ -170,28 +170,19 @@ class UI {
   }
   createWalletUI() {
     this.walletEl.innerHTML = "";
-    const header = document.createElement("div");
-    header.className = "coin even";
-    header.style.fontWeight = "bold";
-    header.innerHTML = `
-      <span class="symbol">Symbol</span>
-      <span class="name">Name</span>
-      <span class="price">Price</span>
-    `;
-    this.walletEl.appendChild(header);
     this.market.coins.forEach((coin, idx) => {
-      const coinDiv = document.createElement("div");
-      coinDiv.className = `coin ${idx % 2 === 0 ? "even" : ""}`;
-      coinDiv.innerHTML = `
-        <span class="symbol">${coin.symbol.toUpperCase()} <img src="${
-        coin.src
-      }" alt="${coin.name}" /></span>
-        <span class="name">${coin.name}</span>
-        <span class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
+      const coinRow = document.createElement("tr");
+      coinRow.className = `coin`;
+      coinRow.innerHTML = `
+        <td class="symbol">
+        <img src="${coin.src}" alt="${coin.name}" />
+      ${coin.symbol.toUpperCase()} </td>
+        <td class="name">${coin.name}</td>
+        <td class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
         2
-      )}</span>
+      )}</td>
       `;
-      this.walletEl.appendChild(coinDiv);
+      this.walletEl.appendChild(coinRow);
       this.marketPriceSpans.push(
         document.getElementById(`price-${coin.symbol}`)
       );
