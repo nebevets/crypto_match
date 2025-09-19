@@ -1,4 +1,22 @@
-const $document = $(document);
+document.addEventListener("DOMContentLoaded", () => {
+  const coinsData = [
+    new Coin("Cardano", "ada", "images/ada.png", 0.03),
+    new Coin("Binance", "bnb", "images/bnb.png", 5.72),
+    new Coin("Bitcoin", "btc", "images/btc.png", 3977.1),
+    new Coin("Dash", "dash", "images/dash.png", 86.43),
+    new Coin("Ethereum", "eth", "images/eth.png", 111.44),
+    new Coin("Litecoin", "ltc", "images/ltc.png", 31.67),
+    new Coin("Stellar", "xlm", "images/xlm.png", 0.15),
+    new Coin("Ripple", "xrp", "images/xrp.png", 0.35),
+    new Coin("Monero", "xmr", "images/xmr.png", 57.25),
+  ];
+  const wallet = new Wallet(coinsData);
+  const game = new Game(wallet);
+  const market = new Market(coinsData);
+  const ui = new UI(game, market);
+  ui.initialize();
+  market.startUpdating();
+});
 
 class Coin {
   constructor(name, symbol, src, price) {
@@ -7,29 +25,13 @@ class Coin {
     this.src = src;
     this.price = price;
     this.quantity = 0;
-    this.state = "hidden"; // 'hidden', 'revealed', 'matched'
+    this.state = "hidden";
   }
   addQuantity(amount) {
     this.quantity += amount;
   }
   updatePrice(newPrice) {
     this.price = newPrice;
-  }
-}
-
-class Wallet {
-  constructor(coins = []) {
-    this.coins = coins;
-    this.totalUSD = 0;
-  }
-  getCoinBySymbol(symbol) {
-    return this.coins.find((coin) => coin.symbol === symbol);
-  }
-  updateTotal() {
-    this.totalUSD = this.coins.reduce(
-      (total, coin) => total + coin.price * coin.quantity,
-      0
-    );
   }
 }
 
@@ -42,14 +44,13 @@ class Game {
     this.maxMatches = 0;
     this.coins = [];
     this.locked = false;
-    this.backImgPath = "images/back.png"; // <-- Add this line
+    this.backImgPath = "images/back.png";
   }
   startNewGame(coins) {
     this.gamesPlayed++;
     this.tries = 0;
     this.matches = 0;
     this.maxMatches = coins.length;
-    // Duplicate and shuffle coins for the board
     const doubledArray = [...coins, ...coins];
     for (let i = doubledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -65,16 +66,11 @@ class Game {
     if (this.locked) return;
     const coin = this.coins[index];
     if (!coin || coin.state !== "hidden") return;
-
-    // Reveal coin
     coin.state = "revealed";
     onUpdate();
-
-    // Get all currently revealed but unmatched coins
     const revealedUnmatched = this.coins
       .map((c, i) => ({ c, i }))
       .filter(({ c }) => c.state === "revealed");
-
     if (revealedUnmatched.length === 2) {
       this.locked = true;
       this.tries++;
@@ -143,85 +139,82 @@ class UI {
   constructor(game, market) {
     this.game = game;
     this.market = market;
-    this.$gamesPlayed = $("#gamesPlayed");
-    this.$tries = $("#tries");
-    this.$accuracy = $("#accuracy");
-    this.$wallet = $("#wallet");
-    this.$gameArea = $("#gameArea");
-    this.$resetButton = $("button.reset");
-    this.$message = $("#message");
-    this.$totalUSD = $("#totalUSD");
-    this.$marketPriceSpans = [];
+    this.gamesPlayedEl = document.getElementById("gamesPlayed");
+    this.triesEl = document.getElementById("tries");
+    this.accuracyEl = document.getElementById("accuracy");
+    this.walletEl = document.getElementById("wallet");
+    this.gameAreaEl = document.getElementById("gameArea");
+    this.resetButtonEl = document.querySelector("button.reset");
+    this.messageEl = document.getElementById("message");
+    this.totalUSDEl = document.getElementById("totalUSD");
+    this.marketPriceSpans = [];
     this.msgTimeOut = null;
     this.coinsData = market.coins;
-    this.$resetButton.on("click", () => this.startGameUI());
+    if (this.resetButtonEl) {
+      this.resetButtonEl.addEventListener("click", () => this.startGameUI());
+    }
   }
-
   showMessage(msg, timeout = 1500) {
     clearTimeout(this.msgTimeOut);
-    this.$message.text(msg).removeClass("hidden");
+    this.messageEl.textContent = msg;
+    this.messageEl.classList.remove("hidden");
     if (timeout > 0) {
       this.msgTimeOut = setTimeout(() => {
-        this.$message.addClass("hidden");
+        this.messageEl.classList.add("hidden");
       }, timeout);
     }
   }
-
   initialize() {
     this.createWalletUI();
     this.startGameUI();
   }
-
   createWalletUI() {
-    this.$wallet.empty();
-    const $header = $(`
-      <div class="coin even" style="font-weight:bold;">
-        <span class="symbol">Symbol</span>
-        <span class="name">Name</span>
-        <span class="price">Price</span>
-      </div>
-    `);
-    this.$wallet.append($header);
+    this.walletEl.innerHTML = "";
+    const header = document.createElement("div");
+    header.className = "coin even";
+    header.style.fontWeight = "bold";
+    header.innerHTML = `
+      <span class="symbol">Symbol</span>
+      <span class="name">Name</span>
+      <span class="price">Price</span>
+    `;
+    this.walletEl.appendChild(header);
     this.market.coins.forEach((coin, idx) => {
-      const evenClass = idx % 2 === 0 ? "even" : "";
-      const $coinDiv = $(`
-        <div class="coin ${evenClass}">
-          <span class="symbol">${coin.symbol.toUpperCase()} <img src="${
+      const coinDiv = document.createElement("div");
+      coinDiv.className = `coin ${idx % 2 === 0 ? "even" : ""}`;
+      coinDiv.innerHTML = `
+        <span class="symbol">${coin.symbol.toUpperCase()} <img src="${
         coin.src
       }" alt="${coin.name}" /></span>
-          <span class="name">${coin.name}</span>
-          <span class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
+        <span class="name">${coin.name}</span>
+        <span class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
         2
       )}</span>
-        </div>
-      `);
-      this.$wallet.append($coinDiv);
-      this.$marketPriceSpans.push($(`#price-${coin.symbol}`));
+      `;
+      this.walletEl.appendChild(coinDiv);
+      this.marketPriceSpans.push(
+        document.getElementById(`price-${coin.symbol}`)
+      );
     });
   }
-
   renderGameBoard() {
-    this.$gameArea.empty();
+    this.gameAreaEl.innerHTML = "";
     this.game.coins.forEach((coin, index) => {
-      const $cardDiv = $(`
-        <div class="card" data-index="${index}"></div>
-      `);
-
-      // Remove .hidden logic
-      $cardDiv.removeClass("hidden");
-
-      // Always add .card and .back by default
-      $cardDiv.addClass("card");
+      const cardDiv = document.createElement("div");
+      cardDiv.className = "card";
+      cardDiv.dataset.index = index;
 
       if (coin.state === "hidden") {
-        $cardDiv.addClass("back").removeClass("revealed matched");
-        $cardDiv.css("background-image", `url(${this.game.backImgPath})`);
+        cardDiv.classList.add("back");
+        cardDiv.classList.remove("revealed", "matched");
+        cardDiv.style.backgroundImage = `url(${this.game.backImgPath})`;
       } else {
-        $cardDiv.removeClass("back").addClass(coin.state);
-        $cardDiv.css("background-image", `url(${coin.src})`);
+        cardDiv.classList.remove("back");
+        cardDiv.classList.add(coin.state);
+        cardDiv.style.backgroundImage = `url(${coin.src})`;
       }
 
-      $cardDiv.on("click", () => {
+      cardDiv.addEventListener("click", () => {
         this.game.handleClick(
           index,
           () => this.renderGameBoard(),
@@ -245,17 +238,15 @@ class UI {
         );
         this.updateStatsUI();
       });
-      this.$gameArea.append($cardDiv);
+      this.gameAreaEl.appendChild(cardDiv);
     });
   }
-
   updateStatsUI() {
-    this.$gamesPlayed.text(this.game.gamesPlayed);
-    this.$tries.text(this.game.tries);
-    this.$accuracy.text(this.game.calculateAccuracy());
-    this.$totalUSD.text("$" + this.game.wallet.totalUSD.toFixed(2));
+    this.gamesPlayedEl.textContent = this.game.gamesPlayed;
+    this.triesEl.textContent = this.game.tries;
+    this.accuracyEl.textContent = this.game.calculateAccuracy();
+    this.totalUSDEl.textContent = "$" + this.game.wallet.totalUSD.toFixed(2);
   }
-
   startGameUI() {
     this.game.startNewGame(this.coinsData);
     this.updateStatsUI();
@@ -264,22 +255,18 @@ class UI {
   }
 }
 
-$document.ready(() => {
-  const coinsData = [
-    new Coin("Cardano", "ada", "images/ada.png", 0.03),
-    new Coin("Binance", "bnb", "images/bnb.png", 5.72),
-    new Coin("Bitcoin", "btc", "images/btc.png", 3977.1),
-    new Coin("Dash", "dash", "images/dash.png", 86.43),
-    new Coin("Ethereum", "eth", "images/eth.png", 111.44),
-    new Coin("Litecoin", "ltc", "images/ltc.png", 31.67),
-    new Coin("Stellar", "xlm", "images/xlm.png", 0.15),
-    new Coin("Ripple", "xrp", "images/xrp.png", 0.35),
-    new Coin("Monero", "xmr", "images/xmr.png", 57.25),
-  ];
-  const wallet = new Wallet(coinsData);
-  const game = new Game(wallet);
-  const market = new Market(coinsData);
-  const ui = new UI(game, market);
-  ui.initialize();
-  market.startUpdating();
-});
+class Wallet {
+  constructor(coins = []) {
+    this.coins = coins;
+    this.totalUSD = 0;
+  }
+  getCoinBySymbol(symbol) {
+    return this.coins.find((coin) => coin.symbol === symbol);
+  }
+  updateTotal() {
+    this.totalUSD = this.coins.reduce(
+      (total, coin) => total + coin.price * coin.quantity,
+      0
+    );
+  }
+}
