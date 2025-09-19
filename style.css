@@ -45,14 +45,6 @@ button.reset {
   flex-direction: column;
 }
 
-.even {
-  background: white;
-}
-
-.green {
-  color: green;
-}
-
 header,
 footer {
   background: #6e7b8e;
@@ -78,42 +70,59 @@ footer span {
   display: grid;
   grid-template-areas: "wallet gameArea";
   grid-template-columns: 1fr 3fr;
-  gap: 5px;
 }
 
 .hidden {
   display: none;
 }
 
-.red {
-  color: red;
+.stats {
+  display: flex;
+  justify-content: space-around;
 }
 
-#wallet {
-  background-color: #f1f2f5;
-  border: 1px solid #1d2126;
-  border-radius: 5px;
-  font-size: small;
-  margin: 5px 5px;
+.wallet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  overflow-x: auto;
+}
+
+.wallet-table th {
+  background: #d1d5da;
+  font-weight: bold;
   text-align: left;
-  width: 210px;
+  white-space: nowrap;
+  padding: 0.5rem;
 }
 
-#wallet div:first-child {
-  border-bottom: 1px solid black;
+.wallet-table td {
+  padding: 0.5rem;
+  vertical-align: middle;
 }
 
-#wallet div:last-child {
-  border-radius: 0 0 5px 5px;
+.wallet-table tbody tr:nth-child(even) {
+  background: #fff;
 }
 
-#wallet img {
+.wallet-table tbody tr:nth-child(odd) {
+  background: #f6f8fa;
+}
+
+.wallet-table td:first-child {
+  white-space: nowrap;
+  text-align: left;
+}
+
+.price {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.symbol img {
+  vertical-align: middle;
   height: 18px;
   width: 18px;
-}
-
-#wallet span {
-  padding-left: 5px;
 }
 
 #gameArea {
@@ -128,6 +137,10 @@ footer span {
   font-size: medium;
 }
 
-.balance {
-  text-align: right;
+@media (max-width: 600px) {
+  .wallet-table {
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+  }
 }
