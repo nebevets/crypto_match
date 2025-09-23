@@ -191,21 +191,30 @@ class UI {
   renderGameBoard() {
     this.gameAreaEl.innerHTML = "";
     this.game.coins.forEach((coin, index) => {
-      const cardDiv = document.createElement("div");
-      cardDiv.className = "card";
-      cardDiv.dataset.index = index;
+      const cardBtn = document.createElement("button");
+      cardBtn.className = "card";
+      cardBtn.type = "button";
+      cardBtn.dataset.index = index;
 
       if (coin.state === "hidden") {
-        cardDiv.classList.add("back");
-        cardDiv.classList.remove("revealed", "matched");
-        cardDiv.style.backgroundImage = `url(${this.game.backImgPath})`;
-      } else {
-        cardDiv.classList.remove("back");
-        cardDiv.classList.add(coin.state);
-        cardDiv.style.backgroundImage = `url(${coin.src})`;
+        cardBtn.classList.add("back");
+        cardBtn.classList.remove("revealed", "matched");
+        cardBtn.style.backgroundImage = `url(${this.game.backImgPath})`;
+        cardBtn.setAttribute("aria-label", "Click to reveal this coin");
+      } else if (coin.state === "revealed") {
+        cardBtn.classList.remove("back");
+        cardBtn.classList.add("revealed");
+        cardBtn.style.backgroundImage = `url(${coin.src})`;
+        cardBtn.setAttribute("aria-label", `Revealed: ${coin.name}`);
+      } else if (coin.state === "matched") {
+        cardBtn.classList.remove("back");
+        cardBtn.classList.add("matched");
+        cardBtn.style.backgroundImage = `url(${coin.src})`;
+        cardBtn.setAttribute("aria-label", `Matched: ${coin.name}`);
+        cardBtn.disabled = true; // Prevent further interaction
       }
 
-      cardDiv.addEventListener("click", () => {
+      cardBtn.addEventListener("click", () => {
         this.game.handleClick(
           index,
           () => this.renderGameBoard(),
@@ -229,7 +238,8 @@ class UI {
         );
         this.updateStatsUI();
       });
-      this.gameAreaEl.appendChild(cardDiv);
+
+      this.gameAreaEl.appendChild(cardBtn);
     });
   }
   updateStatsUI() {

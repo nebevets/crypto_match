@@ -13,8 +13,11 @@
   <body>
     <div class="container">
       <header>
-        <button class="reset">Reset Board</button><span>Crypto-Match</span
-        ><span id="totalUSD">$0.00</span>
+        <button class="reset" aria-label="Reset the game board">
+          Reset Board
+        </button>
+        <h1>Crypto-Match</h1>
+        <span id="totalUSD">$0.00</span>
       </header>
       <div class="stats">
         <div>Games Played: <span id="gamesPlayed">0</span></div>
@@ -23,6 +26,9 @@
       </div>
       <section class="gameSection">
         <table class="wallet-table">
+          <caption class="sr-only">
+            Wallet Overview
+          </caption>
           <thead>
             <tr>
               <th>Symbol</th>
@@ -37,7 +43,7 @@
         <div id="gameArea" class="gameArea"></div>
       </section>
       <footer>
-        <span id="message">starting game...</span>
+        <h2 id="message" role="status">Starting game...</h2>
       </footer>
     </div>
   </body>
