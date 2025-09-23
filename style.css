@@ -25,7 +25,6 @@ button.reset {
   border: 5px solid #72cf61;
   border-radius: 50%;
   cursor: pointer;
-  display: inline-block;
   height: 64px;
   margin: 8px;
   width: 64px;
@@ -45,9 +44,26 @@ button.reset {
   flex-direction: column;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+h1 {
+  color: #f0f2f5;
+  margin: 0;
+}
+
 header,
 footer {
   background: #6e7b8e;
+  align-items: anchor-center;
   opacity: 0.85;
   height: 3rem;
   display: flex;
