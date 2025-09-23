@@ -1,2 +1,27 @@
+# macOS system files
 .DS_Store
 images/.DS_Store
+
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# OS generated files
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Build output
+dist/
+build/
+
+# Optional: coverage reports
+coverage/
