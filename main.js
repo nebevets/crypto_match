@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const coinsData = [
-    new Coin("Cardano", "ada", "images/ada.png", 0.03),
+    new Coin("Cardano", "ada", "images/ada.png", 0.81),
     new Coin("Binance", "bnb", "images/bnb.png", 5.72),
     new Coin("Bitcoin", "btc", "images/btc.png", 3977.1),
     new Coin("Dash", "dash", "images/dash.png", 86.43),
@@ -109,6 +109,8 @@ class Market {
     this.volatility = 0.03;
     this.minPrice = 0.01;
     this.updateInterval = null;
+    this.walletEl = document.getElementById("wallet");
+    this.marketPriceSpans = [];
   }
   startUpdating(interval = 5000) {
     if (this.updateInterval) return;
@@ -119,6 +121,26 @@ class Market {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
     }
+  }
+  createWalletUI() {
+    this.walletEl.innerHTML = "";
+    this.coins.forEach((coin) => {
+      const coinRow = document.createElement("tr");
+      coinRow.className = `coin`;
+      coinRow.innerHTML = `
+        <td class="symbol">
+        <img src="${coin.src}" alt="${coin.name}" />
+      ${coin.symbol.toUpperCase()} </td>
+        <td class="name">${coin.name}</td>
+        <td class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
+        2
+      )}</td>
+      `;
+      this.walletEl.appendChild(coinRow);
+      this.marketPriceSpans.push(
+        document.getElementById(`price-${coin.symbol}`)
+      );
+    });
   }
   updatePrices() {
     this.coins.forEach((coin) => {
@@ -132,6 +154,16 @@ class Market {
       newPrice = Math.max(newPrice, this.minPrice);
       coin.updatePrice(newPrice);
     });
+    this.updatePricesUI();
+  }
+  updatePricesUI() {
+    this.marketPriceSpans.forEach((el) => {
+      const symbol = el.id.replace("price-", "");
+      const coin = this.coins.find((c) => c.symbol === symbol);
+      if (coin) {
+        el.textContent = `$${coin.price.toFixed(2)}`;
+      }
+    });
   }
 }
 
@@ -142,12 +174,10 @@ class UI {
     this.gamesPlayedEl = document.getElementById("gamesPlayed");
     this.triesEl = document.getElementById("tries");
     this.accuracyEl = document.getElementById("accuracy");
-    this.walletEl = document.getElementById("wallet");
     this.gameAreaEl = document.getElementById("gameArea");
     this.resetButtonEl = document.querySelector("button.reset");
     this.messageEl = document.getElementById("message");
     this.totalUSDEl = document.getElementById("totalUSD");
-    this.marketPriceSpans = [];
     this.msgTimeOut = null;
     this.coinsData = market.coins;
     if (this.resetButtonEl) {
@@ -165,28 +195,8 @@ class UI {
     }
   }
   initialize() {
-    this.createWalletUI();
+    this.market.createWalletUI();
     this.startGameUI();
-  }
-  createWalletUI() {
-    this.walletEl.innerHTML = "";
-    this.market.coins.forEach((coin, idx) => {
-      const coinRow = document.createElement("tr");
-      coinRow.className = `coin`;
-      coinRow.innerHTML = `
-        <td class="symbol">
-        <img src="${coin.src}" alt="${coin.name}" />
-      ${coin.symbol.toUpperCase()} </td>
-        <td class="name">${coin.name}</td>
-        <td class="price" id="price-${coin.symbol}">$${coin.price.toFixed(
-        2
-      )}</td>
-      `;
-      this.walletEl.appendChild(coinRow);
-      this.marketPriceSpans.push(
-        document.getElementById(`price-${coin.symbol}`)
-      );
-    });
   }
   renderGameBoard() {
     this.gameAreaEl.innerHTML = "";
