@@ -183,6 +183,7 @@ class UI {
     if (this.resetButtonEl) {
       this.resetButtonEl.addEventListener("click", () => this.startGameUI());
     }
+    this.coinButtons = [];
   }
   showMessage(msg, timeout = 1500) {
     clearTimeout(this.msgTimeOut);
@@ -200,41 +201,25 @@ class UI {
   }
   renderGameBoard() {
     this.gameAreaEl.innerHTML = "";
+    this.coinButtons = [];
     this.game.coins.forEach((coin, index) => {
       const coinBtn = document.createElement("button");
       coinBtn.className = "coin";
       coinBtn.type = "button";
       coinBtn.dataset.index = index;
-
-      if (coin.state === "hidden") {
-        coinBtn.classList.add("back");
-        coinBtn.classList.remove("revealed", "matched");
-        coinBtn.style.backgroundImage = `url(${this.game.backImgPath})`;
-        coinBtn.setAttribute("aria-label", "Click to reveal this coin");
-      } else if (coin.state === "revealed") {
-        coinBtn.classList.remove("back");
-        coinBtn.classList.add("revealed");
-        coinBtn.style.backgroundImage = `url(${coin.src})`;
-        coinBtn.setAttribute("aria-label", `Revealed: ${coin.name}`);
-      } else if (coin.state === "matched") {
-        coinBtn.classList.remove("back");
-        coinBtn.classList.add("matched");
-        coinBtn.style.backgroundImage = `url(${coin.src})`;
-        coinBtn.setAttribute("aria-label", `Matched: ${coin.name}`);
-        coinBtn.disabled = true; // Prevent further interaction
-      }
+      this.updateCoinButton(coinBtn, coin);
 
       coinBtn.addEventListener("click", () => {
         this.game.handleClick(
           index,
-          () => this.renderGameBoard(),
+          () => this.updateCoinStates(), // Only update changed coins
           (matchIndices) => {
             this.showMessage("That's a match, nice!!");
-            this.renderGameBoard();
+            this.updateCoinStates();
           },
           (mismatchIndices) => {
             this.showMessage("Those don't match, fail!");
-            this.renderGameBoard();
+            this.updateCoinStates();
             setTimeout(() => {
               this.showMessage("Try again");
             }, 1000);
@@ -249,7 +234,34 @@ class UI {
         this.updateStatsUI();
       });
 
+      this.coinButtons.push(coinBtn);
       this.gameAreaEl.appendChild(coinBtn);
+    });
+  }
+  updateCoinButton(coinBtn, coin) {
+    if (coin.state === "hidden") {
+      coinBtn.classList.add("back");
+      coinBtn.classList.remove("revealed", "matched");
+      coinBtn.style.backgroundImage = `url(${this.game.backImgPath})`;
+      coinBtn.setAttribute("aria-label", "Click to reveal this coin");
+      coinBtn.disabled = false;
+    } else if (coin.state === "revealed") {
+      coinBtn.classList.remove("back");
+      coinBtn.classList.add("revealed");
+      coinBtn.style.backgroundImage = `url(${coin.src})`;
+      coinBtn.setAttribute("aria-label", `Revealed: ${coin.name}`);
+      coinBtn.disabled = false;
+    } else if (coin.state === "matched") {
+      coinBtn.classList.remove("back");
+      coinBtn.classList.add("matched");
+      coinBtn.style.backgroundImage = `url(${coin.src})`;
+      coinBtn.setAttribute("aria-label", `Matched: ${coin.name}`);
+      coinBtn.disabled = true;
+    }
+  }
+  updateCoinStates() {
+    this.game.coins.forEach((coin, index) => {
+      this.updateCoinButton(this.coinButtons[index], coin);
     });
   }
   updateStatsUI() {
