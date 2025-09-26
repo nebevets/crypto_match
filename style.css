@@ -19,7 +19,7 @@ button.reset {
   padding: 5px;
 }
 
-.card {
+.coin {
   background-position: center;
   background-size: cover;
   border: 5px solid #72cf61;
@@ -30,13 +30,17 @@ button.reset {
   width: 64px;
 }
 
-.card.back {
+.coin.back {
   background-image: url("images/back.png");
 }
 
-.card.matched,
-.card.revealed {
+.coin.matched,
+.coin.revealed {
   /* The coin image will be set inline via JS */
+}
+
+.coin-row {
+  /* For wallet table rows, if needed */
 }
 
 .container {
