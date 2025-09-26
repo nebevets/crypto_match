@@ -126,7 +126,7 @@ class Market {
     this.walletEl.innerHTML = "";
     this.coins.forEach((coin) => {
       const coinRow = document.createElement("tr");
-      coinRow.className = `coin`;
+      coinRow.className = `coin-row`;
       coinRow.innerHTML = `
         <td class="symbol">
         <img src="${coin.src}" alt="${coin.name}" />
@@ -201,30 +201,30 @@ class UI {
   renderGameBoard() {
     this.gameAreaEl.innerHTML = "";
     this.game.coins.forEach((coin, index) => {
-      const cardBtn = document.createElement("button");
-      cardBtn.className = "card";
-      cardBtn.type = "button";
-      cardBtn.dataset.index = index;
+      const coinBtn = document.createElement("button");
+      coinBtn.className = "coin";
+      coinBtn.type = "button";
+      coinBtn.dataset.index = index;
 
       if (coin.state === "hidden") {
-        cardBtn.classList.add("back");
-        cardBtn.classList.remove("revealed", "matched");
-        cardBtn.style.backgroundImage = `url(${this.game.backImgPath})`;
-        cardBtn.setAttribute("aria-label", "Click to reveal this coin");
+        coinBtn.classList.add("back");
+        coinBtn.classList.remove("revealed", "matched");
+        coinBtn.style.backgroundImage = `url(${this.game.backImgPath})`;
+        coinBtn.setAttribute("aria-label", "Click to reveal this coin");
       } else if (coin.state === "revealed") {
-        cardBtn.classList.remove("back");
-        cardBtn.classList.add("revealed");
-        cardBtn.style.backgroundImage = `url(${coin.src})`;
-        cardBtn.setAttribute("aria-label", `Revealed: ${coin.name}`);
+        coinBtn.classList.remove("back");
+        coinBtn.classList.add("revealed");
+        coinBtn.style.backgroundImage = `url(${coin.src})`;
+        coinBtn.setAttribute("aria-label", `Revealed: ${coin.name}`);
       } else if (coin.state === "matched") {
-        cardBtn.classList.remove("back");
-        cardBtn.classList.add("matched");
-        cardBtn.style.backgroundImage = `url(${coin.src})`;
-        cardBtn.setAttribute("aria-label", `Matched: ${coin.name}`);
-        cardBtn.disabled = true; // Prevent further interaction
+        coinBtn.classList.remove("back");
+        coinBtn.classList.add("matched");
+        coinBtn.style.backgroundImage = `url(${coin.src})`;
+        coinBtn.setAttribute("aria-label", `Matched: ${coin.name}`);
+        coinBtn.disabled = true; // Prevent further interaction
       }
 
-      cardBtn.addEventListener("click", () => {
+      coinBtn.addEventListener("click", () => {
         this.game.handleClick(
           index,
           () => this.renderGameBoard(),
@@ -249,7 +249,7 @@ class UI {
         this.updateStatsUI();
       });
 
-      this.gameAreaEl.appendChild(cardBtn);
+      this.gameAreaEl.appendChild(coinBtn);
     });
   }
   updateStatsUI() {
